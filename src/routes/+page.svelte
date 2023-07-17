@@ -2,6 +2,7 @@
 	import { tick } from 'svelte';
 	import CodeMirror from '$lib/components/CodeMirror.svelte';
 	import { css } from '@codemirror/lang-css';
+	import { html } from '@codemirror/lang-html';
 	import { oneDark } from '@codemirror/theme-one-dark';
 
 	let code = `
@@ -109,12 +110,21 @@
 				return false;
 		}
 	}
+
+	const markup = `
+<div id="snowman">
+	<div id="ball-1" class="ball"></div>
+	<div id="ball-2" class="ball"></div>
+	<div id="ball-3" class="ball"></div>
+</div>
+	`;
 </script>
 
 <h1 class="text-4xl font-bold mx-4 my-8 text-center">Style By Number</h1>
 
-<section id="editor" class="mt-20 mx-8">
-	<CodeMirror bind:value={code} lang={css()} theme={oneDark} />
+<section id="editors" class="mt-20 mx-8 flex justify-between">
+	<CodeMirror bind:value={code} lang={css()} theme={oneDark} class="flex-auto" />
+	<CodeMirror value={markup} lang={html()} theme={oneDark} readonly class="flex-auto" />
 </section>
 
 <section id="instructions" class="mt-20 mx-8">
@@ -136,9 +146,5 @@
 <section id="preview" class="mt-20 mx-8">
 	{@html `<style>${code}</style>`}
 
-	<div id="snowman">
-		<div id="ball-1" class="ball" />
-		<div id="ball-2" class="ball" />
-		<div id="ball-3" class="ball" />
-	</div>
+	{@html markup}
 </section>
