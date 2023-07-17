@@ -13,6 +13,14 @@
 }
 	`;
 
+	const markup = `
+<div id="snowman">
+	<div id="ball-1" class="ball"></div>
+	<div id="ball-2" class="ball"></div>
+	<div id="ball-3" class="ball"></div>
+</div>
+	`;
+
 	type Comparator = '>' | '>=' | '<' | '<=' | '==' | '!=';
 
 	interface Requirement {
@@ -109,22 +117,17 @@
 		}
 	}
 
-	const markup = `
-<div id="snowman">
-	<div id="ball-1" class="ball"></div>
-	<div id="ball-2" class="ball"></div>
-	<div id="ball-3" class="ball"></div>
-</div>
-	`;
 	$: percentComplete = Math.round(
 		(tasks.filter((task) => task.completed).length / tasks.length) * 100
 	);
 </script>
 
 <div class="max-w-6xl mx-auto">
-	<h1 class="text-4xl font-bold mx-4 my-8 text-center">Style By Number</h1>
+	<h1 class="text-4xl font-bold mx-4 my-8">
+		<div class="mx-auto w-fit pt-4 border-t-2 border-t-green-300">Style By Number</div>
+	</h1>
 
-	<section id="editors" class="mt-20 mx-8 flex justify-between gap-x-4">
+	<section id="editors" class="mt-20 flex justify-between gap-x-4">
 		<CodeMirror
 			bind:value={styles}
 			lang={css()}
@@ -140,12 +143,9 @@
 		/>
 	</section>
 
-	<section id="tasks" class="mt-20 mx-8">
+	<section id="tasks" class="mt-20 px-6 border-l-2 border-l-red-300">
 		<h2 class="text-2xl font-bold mb-4">Instructions</h2>
-		<p>
-			Using the <code class="text-slate-50">.ball</code> class, style the three balls to look like a
-			snowman.
-		</p>
+		<p>Style the three balls to look like a snowman.</p>
 
 		<ul class="mt-4">
 			{#each tasks as task}
@@ -155,10 +155,11 @@
 				</li>
 			{/each}
 		</ul>
+
 		<p class="mt-2">{percentComplete}% complete</p>
 	</section>
 
-	<section id="preview" class="mt-20 mx-8">
+	<section id="preview" class="mt-20 w-full p-6 rounded border-2 border-dashed border-gray-200/10">
 		{@html `<style>${styles}</style>`}
 
 		{@html markup}
