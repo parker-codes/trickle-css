@@ -5,5 +5,15 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
+	},
+	optimizeDeps: {
+		exclude: [
+			'codemirror',
+			'@codemirror/language',
+			'@codemirror/language-css',
+			'@codemirror/state',
+			'@codemirror/commands',
+			'@codemirror/view'
+		]
 	}
 });
