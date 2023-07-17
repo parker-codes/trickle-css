@@ -5,7 +5,7 @@
 	import { html } from '@codemirror/lang-html';
 	import { oneDark } from '@codemirror/theme-one-dark';
 
-	let code = `
+	let styles = `
 .ball {
   width: 10px;
   height: 10px;
@@ -22,13 +22,13 @@
 		value: string;
 	}
 
-	interface Instruction {
+	interface Task {
 		text: string;
 		requirement: Requirement;
 		completed: boolean;
 	}
 
-	let instructions: Instruction[] = [
+	let tasks: Task[] = [
 		{
 			text: 'Increase the width of the snowballs to at least 100px',
 			requirement: {
@@ -61,16 +61,14 @@
 		}
 	];
 
-	$: verifyAll(code);
+	$: verifyAll(styles);
 
-	async function verifyAll(code: string): Promise<void> {
-		await tick();
+	async function verifyAll(_code: string): Promise<void> {
+		await tick(); // wait for styles to apply before checking
 
-		instructions = instructions.map((instruction) => {
-			return {
-				...instruction,
-				completed: verify(instruction.requirement)
-			};
+		tasks = tasks.map((task) => {
+			task.completed = verify(task.requirement);
+			return task;
 		});
 	}
 
@@ -125,7 +123,7 @@
 
 	<section id="editors" class="mt-20 mx-8 flex justify-between gap-x-4">
 		<CodeMirror
-			bind:value={code}
+			bind:value={styles}
 			lang={css()}
 			theme={oneDark}
 			class="flex-auto rounded overflow-clip"
@@ -139,7 +137,7 @@
 		/>
 	</section>
 
-	<section id="instructions" class="mt-20 mx-8">
+	<section id="tasks" class="mt-20 mx-8">
 		<h2 class="text-2xl font-bold mb-4">Instructions</h2>
 		<p>
 			Using the <code class="text-slate-50">.ball</code> class, style the three balls to look like a
@@ -147,17 +145,17 @@
 		</p>
 
 		<ul class="mt-4">
-			{#each instructions as instruction}
+			{#each tasks as task}
 				<li>
-					<span class={instruction.completed ? 'text-green-400' : 'opacity-20'}>✓</span>
-					<span>{instruction.text}</span>
+					<span class={task.completed ? 'text-green-400' : 'opacity-20'}>✓</span>
+					<span>{task.text}</span>
 				</li>
 			{/each}
 		</ul>
 	</section>
 
 	<section id="preview" class="mt-20 mx-8">
-		{@html `<style>${code}</style>`}
+		{@html `<style>${styles}</style>`}
 
 		{@html markup}
 	</section>
