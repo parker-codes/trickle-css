@@ -116,6 +116,9 @@
 	<div id="ball-3" class="ball"></div>
 </div>
 	`;
+	$: percentComplete = Math.round(
+		(tasks.filter((task) => task.completed).length / tasks.length) * 100
+	);
 </script>
 
 <div class="max-w-6xl mx-auto">
@@ -152,6 +155,7 @@
 				</li>
 			{/each}
 		</ul>
+		<p class="mt-2">{percentComplete}% complete</p>
 	</section>
 
 	<section id="preview" class="mt-20 mx-8">
