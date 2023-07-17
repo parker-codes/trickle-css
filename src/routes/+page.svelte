@@ -5,10 +5,9 @@
 
 	let code = `
 .ball {
-	width: 100px;
-	height: 100px;
-	border-radius: 50%;
-	background-color: #fff;
+  width: 10px;
+  height: 10px;
+  background-color: #fff;
 }
 	`;
 </script>
