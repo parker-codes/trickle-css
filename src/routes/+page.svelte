@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { tick } from 'svelte';
-	import CodeMirror from '$lib/components/CodeMirror.svelte';
 	import { css } from '@codemirror/lang-css';
 	import { html } from '@codemirror/lang-html';
 	import { oneDark } from '@codemirror/theme-one-dark';
+	import CodeMirror from '$lib/components/CodeMirror.svelte';
+	import { getPercentCompleted, type Task, type VerifiedTask } from '$lib/models/task';
+	import { verify } from '$lib/models/requirement';
 
 	let styles = `
 .ball {
@@ -20,26 +22,6 @@
 	<div id="ball-3" class="ball"></div>
 </div>
 	`;
-
-	type RequirementType = 'property' | 'variable';
-	type Comparator = '>' | '>=' | '<' | '<=' | '==' | '!=';
-
-	interface Requirement {
-		type: RequirementType;
-		selector: string;
-		property: string;
-		comparator: Comparator;
-		value: string;
-	}
-
-	interface Task {
-		text: string;
-		requirement: Requirement;
-	}
-
-	interface VerifiedTask extends Task {
-		completed: boolean;
-	}
 
 	const tasks: Task[] = [
 		{
@@ -81,21 +63,33 @@
 				comparator: '==',
 				value: '100px'
 			}
+		},
+		{
+			text: 'Now use that variable to set the width and height of #ball-1, and then multiply it by 1.3 for #ball-2 and 1.7 for #ball-3',
+			requirement: [
+				{
+					type: 'property',
+					selector: '#ball-1',
+					property: 'width',
+					comparator: '==',
+					value: '100px'
+				},
+				{
+					type: 'property',
+					selector: '#ball-2',
+					property: 'width',
+					comparator: '==',
+					value: '130px'
+				},
+				{
+					type: 'property',
+					selector: '#ball-3',
+					property: 'width',
+					comparator: '==',
+					value: '170px'
+				}
+			]
 		}
-		// TODO: now use that for multiplying for the 3 balls
-		// TODO: probably need to allow requirement field to be an array
-		// {
-		// 	text: 'Now use that variable to set the width and height of #ball-1, and then multiply it by 1.3 for #ball-2 and 1.7 for #ball-3',
-		// 	requirement: [
-		// 		{
-		// 			type: 'variable',
-		// 			selector: '.ball',
-		// 			property: '--base-size',
-		// 			comparator: '==',
-		// 			value: '100px'
-		// 		},
-		// 	],
-		// }
 	];
 
 	let verifiedTasks: VerifiedTask[] = [];
@@ -110,47 +104,7 @@
 		}));
 	}
 
-	function verify(requirement: Requirement): boolean {
-		console.log('verifying requirement', requirement);
-
-		// server-side check
-		if (typeof window === 'undefined') return false;
-
-		// TODO: could also parse the code var itself instead of inspecting the DOM
-		const el = document.querySelector(requirement.selector);
-		if (!el) return false;
-		const style = window.getComputedStyle(el);
-
-		// this works for both properties and variables
-		const value = style.getPropertyValue(requirement.property);
-
-		// TODO: need better parsing than only handling numbers
-		const actual = parseInt(value, 10);
-		const expected = parseInt(requirement.value, 10);
-
-		console.log({ actual, expected });
-
-		switch (requirement.comparator) {
-			case '>':
-				return actual > expected;
-			case '>=':
-				return actual >= expected;
-			case '<':
-				return actual < expected;
-			case '<=':
-				return actual <= expected;
-			case '==':
-				return actual === expected;
-			case '!=':
-				return actual !== expected;
-			default:
-				return false;
-		}
-	}
-
-	$: percentComplete = Math.round(
-		(verifiedTasks.filter((task) => task.completed).length / tasks.length) * 100
-	);
+	$: percentComplete = getPercentCompleted(verifiedTasks);
 </script>
 
 <div class="max-w-6xl mx-auto">
