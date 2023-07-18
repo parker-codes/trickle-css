@@ -21,9 +21,11 @@
 </div>
 	`;
 
+	type RequirementType = 'property' | 'variable';
 	type Comparator = '>' | '>=' | '<' | '<=' | '==' | '!=';
 
 	interface Requirement {
+		type: RequirementType;
 		selector: string;
 		property: string;
 		comparator: Comparator;
@@ -40,6 +42,7 @@
 		{
 			text: 'Increase the width of the snowballs to at least 100px',
 			requirement: {
+				type: 'property',
 				selector: '.ball',
 				property: 'width',
 				comparator: '>=',
@@ -50,6 +53,7 @@
 		{
 			text: 'Use `aspect-ratio` to make all dimensions the same instead of using `height`',
 			requirement: {
+				type: 'property',
 				selector: '.ball',
 				property: 'aspect-ratio',
 				comparator: '==',
@@ -60,10 +64,22 @@
 		{
 			text: 'Give them a nice, fully-round `border-radius`',
 			requirement: {
+				type: 'property',
 				selector: '.ball',
 				property: 'border-radius',
 				comparator: '==',
 				value: '50%'
+			},
+			completed: false
+		},
+		{
+			text: 'For good reusability, create a CSS variable for the base size called `--base-size` and set it to 100px',
+			requirement: {
+				type: 'variable',
+				selector: '.ball',
+				property: '--base-size',
+				comparator: '==',
+				value: '100px'
 			},
 			completed: false
 		}
@@ -91,6 +107,7 @@
 		if (!el) return false;
 		const style = window.getComputedStyle(el);
 
+		// this works for both properties and variables
 		const value = style.getPropertyValue(requirement.property);
 
 		// TODO: need better parsing than only handling numbers
