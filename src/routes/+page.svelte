@@ -173,7 +173,7 @@
 			{/each}
 		</ul>
 
-		<p class="mt-2">{percentComplete}% complete</p>
+		<p class="mt-2 opacity-60">{percentComplete}% complete</p>
 	</section>
 
 	<section id="preview" class="mt-20 w-full p-6 rounded border-2 border-dashed border-gray-200/10">
