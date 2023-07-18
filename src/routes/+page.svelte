@@ -83,6 +83,21 @@
 			},
 			completed: false
 		}
+		// TODO: now use that for multiplying for the 3 balls
+		// TODO: probably need to allow requirement field to be an array
+		// {
+		// 	text: 'Now use that variable to set the width and height of #ball-1, and then multiply it by 1.3 for #ball-2 and 1.7 for #ball-3',
+		// 	requirement: [
+		// 		{
+		// 			type: 'variable',
+		// 			selector: '.ball',
+		// 			property: '--base-size',
+		// 			comparator: '==',
+		// 			value: '100px'
+		// 		},
+		// 	],
+		// 	completed: false
+		// }
 	];
 
 	$: verifyAll(styles);
