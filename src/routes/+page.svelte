@@ -35,10 +35,13 @@
 	interface Task {
 		text: string;
 		requirement: Requirement;
+	}
+
+	interface VerifiedTask extends Task {
 		completed: boolean;
 	}
 
-	let tasks: Task[] = [
+	const tasks: Task[] = [
 		{
 			text: 'Increase the width of the snowballs to at least 100px',
 			requirement: {
@@ -47,8 +50,7 @@
 				property: 'width',
 				comparator: '>=',
 				value: '100px'
-			},
-			completed: false
+			}
 		},
 		{
 			text: 'Use `aspect-ratio` to make all dimensions the same instead of using `height`',
@@ -58,8 +60,7 @@
 				property: 'aspect-ratio',
 				comparator: '==',
 				value: '1'
-			},
-			completed: false
+			}
 		},
 		{
 			text: 'Give them a nice, fully-round `border-radius`',
@@ -69,8 +70,7 @@
 				property: 'border-radius',
 				comparator: '==',
 				value: '50%'
-			},
-			completed: false
+			}
 		},
 		{
 			text: 'For good reusability, create a CSS variable for the base size called `--base-size` and set it to 100px',
@@ -80,8 +80,7 @@
 				property: '--base-size',
 				comparator: '==',
 				value: '100px'
-			},
-			completed: false
+			}
 		}
 		// TODO: now use that for multiplying for the 3 balls
 		// TODO: probably need to allow requirement field to be an array
@@ -96,19 +95,19 @@
 		// 			value: '100px'
 		// 		},
 		// 	],
-		// 	completed: false
 		// }
 	];
 
+	let verifiedTasks: VerifiedTask[] = [];
 	$: verifyAll(styles);
 
 	async function verifyAll(_code: string): Promise<void> {
 		await tick(); // wait for styles to apply before checking
 
-		tasks = tasks.map((task) => {
-			task.completed = verify(task.requirement);
-			return task;
-		});
+		verifiedTasks = tasks.map((task) => ({
+			...task,
+			completed: verify(task.requirement)
+		}));
 	}
 
 	function verify(requirement: Requirement): boolean {
@@ -150,7 +149,7 @@
 	}
 
 	$: percentComplete = Math.round(
-		(tasks.filter((task) => task.completed).length / tasks.length) * 100
+		(verifiedTasks.filter((task) => task.completed).length / tasks.length) * 100
 	);
 </script>
 
@@ -180,7 +179,7 @@
 		<p>Style the three balls to look like a snowman.</p>
 
 		<ul class="mt-4">
-			{#each tasks as task}
+			{#each verifiedTasks as task}
 				<li>
 					<span class={task.completed ? 'text-green-400' : 'opacity-20'}>✓</span>
 					<span>{task.text}</span>
