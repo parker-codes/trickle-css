@@ -1,15 +1,15 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import type { Canvas } from '$lib/models/canvas';
+import type { Challenge } from '$lib/models/challenge';
 
 export const load = (({ params }) => {
-	const canvas = canvases.find((canvas) => canvas.slug === params.slug);
-	if (canvas) return canvas;
+	const challenge = challenges.find((challenge) => challenge.slug === params.slug);
+	if (challenge) return challenge;
 	else throw error(404, 'Not found');
-}) satisfies PageLoad<Canvas>;
+}) satisfies PageLoad<Challenge>;
 
 // TODO: move this somewhere else
-const canvases: Canvas[] = [
+const challenges: Challenge[] = [
 	{
 		title: 'Snowman',
 		slug: 'snowman',

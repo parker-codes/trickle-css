@@ -11,6 +11,6 @@
 	</section>
 
 	<section id="links">
-		<a href="/canvas/snowman">Snowman</a>
+		<a href="/challenge/snowman">Snowman</a>
 	</section>
 </div>
