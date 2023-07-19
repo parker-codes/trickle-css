@@ -13,6 +13,7 @@
 	import { verify } from '$lib/models/requirement';
 	import { debounce } from '$lib/utils/misc';
 	import type { PageData } from './$types';
+	import ResetIcon from '$lib/components/icons/ResetIcon.svelte';
 
 	export let data: PageData;
 
@@ -71,8 +72,9 @@
 			<CodeMirror bind:value={styles} lang={css()} theme={oneDark} class="rounded overflow-clip" />
 			<button
 				on:click={resetStyles}
-				class="rounded px-2 py-1 mt-2 text-xs dark:bg-slate-700 dark:hover:bg-slate-600 text-white"
+				class="rounded px-2 py-1 mt-2 text-xs dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white flex gap-1"
 			>
+				<ResetIcon class="w-3 h-3 translate-y-px" />
 				Reset
 			</button>
 		</div>
@@ -102,6 +104,7 @@
 	</section>
 
 	<section id="preview" class="mt-20 w-full p-6 rounded border-2 border-dashed border-gray-200/10">
+		<!-- TODO: create safeMarkup and safeStyles reactive vars by sanitizing -->
 		{@html `<style>${styles}</style>`}
 		{@html data.markup}
 	</section>
