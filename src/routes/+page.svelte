@@ -9,4 +9,8 @@
 	<section id="editors" class="mt-20 flex justify-between gap-x-4">
 		Have some fun learning CSS while building things one step at a time!
 	</section>
+
+	<section id="links">
+		<a href="/canvas/snowman">Snowman</a>
+	</section>
 </div>
