@@ -72,7 +72,7 @@
 			<CodeMirror bind:value={styles} lang={css()} theme={oneDark} class="rounded overflow-clip" />
 			<button
 				on:click={resetStyles}
-				class="rounded px-2 py-1 mt-2 text-xs dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white flex gap-1"
+				class="rounded px-2 py-1 mt-2 text-xs bg-slate-700 hover:bg-slate-600 text-white flex gap-1"
 			>
 				<ResetIcon class="w-3 h-3 translate-y-px" />
 				Reset
