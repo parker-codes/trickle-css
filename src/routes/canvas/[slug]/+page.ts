@@ -8,6 +8,7 @@ export const load = (({ params }) => {
 	else throw error(404, 'Not found');
 }) satisfies PageLoad<Canvas>;
 
+// TODO: move this somewhere else
 const canvases: Canvas[] = [
 	{
 		title: 'Snowman',
