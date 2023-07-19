@@ -21,8 +21,6 @@ export function verify(requirement: RequirementOrSet): boolean {
 }
 
 function verifySingle(requirement: Requirement): boolean {
-	console.log('verifying requirement', requirement);
-
 	// server-side check
 	if (typeof window === 'undefined') return false;
 
@@ -37,8 +35,6 @@ function verifySingle(requirement: Requirement): boolean {
 	// TODO: need better parsing than only handling numbers
 	const actual = parseInt(value, 10);
 	const expected = parseInt(requirement.value, 10);
-
-	console.log({ actual, expected });
 
 	switch (requirement.comparator) {
 		case '>':
