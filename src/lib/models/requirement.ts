@@ -1,3 +1,5 @@
+import { browser } from '$app/environment';
+
 export type RequirementType = 'property' | 'variable';
 
 export type Comparator = '>' | '>=' | '<' | '<=' | '==' | '!=';
@@ -21,8 +23,7 @@ export function verify(requirement: RequirementOrSet): boolean {
 }
 
 function verifySingle(requirement: Requirement): boolean {
-	// server-side check
-	if (typeof window === 'undefined') return false;
+	if (!browser) return false;
 
 	// TODO: could also parse the code var itself instead of inspecting the DOM
 	const el = document.querySelector(requirement.selector);
