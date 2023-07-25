@@ -3,6 +3,7 @@
 	import { css } from '@codemirror/lang-css';
 	import { html } from '@codemirror/lang-html';
 	import { oneDark } from '@codemirror/theme-one-dark';
+	import DOMPurify from 'isomorphic-dompurify';
 	import CodeMirror from '$lib/components/CodeMirror.svelte';
 	import {
 		getSavedChallengeStyles,
@@ -60,6 +61,9 @@
 		debouncedPersistStyles();
 	}
 	$: stylesChanged(styles);
+
+	$: safeStyles = DOMPurify.sanitize(styles);
+	$: safeMarkup = DOMPurify.sanitize(data.markup);
 </script>
 
 <div class="max-w-6xl mx-auto px-6 pb-16">
@@ -114,9 +118,8 @@
 			id="preview"
 			class="flex-grow basis-96 p-6 rounded border-2 border-dashed border-gray-200/10"
 		>
-			<!-- TODO: create safeMarkup and safeStyles reactive vars by sanitizing -->
-			{@html `<style>${styles}</style>`}
-			{@html data.markup}
+			{@html `<style>${safeStyles}</style>`}
+			{@html safeMarkup}
 		</section>
 	</div>
 </div>
