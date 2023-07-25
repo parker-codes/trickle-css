@@ -62,30 +62,10 @@
 	$: stylesChanged(styles);
 </script>
 
-<div class="max-w-6xl mx-auto">
+<div class="max-w-6xl mx-auto px-6 pb-16">
 	<h1 class="text-4xl font-bold mx-4 my-8">
 		<div class="mx-auto w-fit pt-4 border-t-2 border-t-green-300">Style By Number</div>
 	</h1>
-
-	<section id="editors" class="mt-20 flex justify-between gap-x-4">
-		<div class="flex-auto">
-			<CodeMirror bind:value={styles} lang={css()} theme={oneDark} class="rounded overflow-clip" />
-			<button
-				on:click={resetStyles}
-				class="rounded px-2 py-1 mt-2 text-xs bg-slate-700 hover:bg-slate-600 text-white flex gap-1"
-			>
-				<ResetIcon class="w-3 h-3 translate-y-px" />
-				Reset
-			</button>
-		</div>
-		<CodeMirror
-			value={data.markup}
-			lang={html()}
-			theme={oneDark}
-			readonly
-			class="flex-auto rounded overflow-clip"
-		/>
-	</section>
 
 	<section id="tasks" class="mt-20 px-6 border-l-2 border-l-red-300">
 		<h2 class="text-2xl font-bold mb-4">Instructions</h2>
@@ -103,9 +83,40 @@
 		<p class="mt-2 opacity-60">{percentComplete}% complete</p>
 	</section>
 
-	<section id="preview" class="mt-20 w-full p-6 rounded border-2 border-dashed border-gray-200/10">
-		<!-- TODO: create safeMarkup and safeStyles reactive vars by sanitizing -->
-		{@html `<style>${styles}</style>`}
-		{@html data.markup}
-	</section>
+	<div class="mt-16 flex items-start flex-wrap gap-6">
+		<section id="editors" class="flex-grow basis-96 flex flex-col justify-between gap-y-4">
+			<CodeMirror
+				value={data.markup}
+				lang={html()}
+				theme={oneDark}
+				readonly
+				class="rounded overflow-clip"
+			/>
+
+			<div>
+				<CodeMirror
+					bind:value={styles}
+					lang={css()}
+					theme={oneDark}
+					class="rounded overflow-clip"
+				/>
+				<button
+					on:click={resetStyles}
+					class="rounded px-2 py-1 mt-2 text-xs bg-slate-700 hover:bg-slate-600 text-white flex gap-1"
+				>
+					<ResetIcon class="w-3 h-3 translate-y-px" />
+					Reset
+				</button>
+			</div>
+		</section>
+
+		<section
+			id="preview"
+			class="flex-grow basis-96 p-6 rounded border-2 border-dashed border-gray-200/10"
+		>
+			<!-- TODO: create safeMarkup and safeStyles reactive vars by sanitizing -->
+			{@html `<style>${styles}</style>`}
+			{@html data.markup}
+		</section>
+	</div>
 </div>
