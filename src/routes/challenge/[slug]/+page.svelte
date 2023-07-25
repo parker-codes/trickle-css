@@ -73,7 +73,7 @@
 
 		<ul class="mt-4">
 			{#each verifiedTasks as task}
-				<li>
+				<li class="flex gap-2 mt-1 first:mt-0">
 					<span class={task.completed ? 'text-green-400' : 'opacity-20'}>✓</span>
 					<span>{task.text}</span>
 				</li>
