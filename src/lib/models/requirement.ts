@@ -2,13 +2,16 @@ import { browser } from '$app/environment';
 
 export type RequirementType = 'property' | 'variable';
 
+export type PropertyType = 'literal' | 'number';
+
 export type Comparator = '>' | '>=' | '<' | '<=' | '==' | '!=';
 
 export interface Requirement {
 	type: RequirementType;
 	selector: string;
 	property: string;
-	comparator: Comparator;
+	propertyType: PropertyType;
+	comparator?: Comparator;
 	value: string;
 }
 
@@ -33,7 +36,16 @@ function verifySingle(requirement: Requirement): boolean {
 	// this works for both properties and variables
 	const value = style.getPropertyValue(requirement.property);
 
-	// TODO: need better parsing than only handling numbers
+	switch (requirement.propertyType) {
+		case 'literal':
+			return value === requirement.value;
+		case 'number':
+			return verifyNumber(requirement, value);
+	}
+}
+
+function verifyNumber(requirement: Requirement, value: string): boolean {
+	// TODO: need better parsing than only handling generic numbers; should be able to do px, rem, etc
 	const actual = parseInt(value, 10);
 	const expected = parseInt(requirement.value, 10);
 
