@@ -83,7 +83,7 @@
 		<p class="mt-2 opacity-60">{percentComplete}% complete</p>
 	</section>
 
-	<div class="mt-16 flex items-start flex-wrap gap-6">
+	<div class="mt-16 flex items-start flex-wrap gap-x-6 gap-y-16">
 		<section id="editors" class="flex-grow basis-96 flex flex-col justify-between gap-y-4">
 			<CodeMirror
 				value={data.markup}
