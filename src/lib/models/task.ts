@@ -10,5 +10,6 @@ export interface VerifiedTask extends Task {
 }
 
 export function getPercentCompleted(tasks: VerifiedTask[]): number {
+	if (tasks.length === 0) return 0;
 	return Math.round((tasks.filter((task) => task.completed).length / tasks.length) * 100);
 }
