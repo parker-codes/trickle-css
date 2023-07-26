@@ -82,9 +82,13 @@
 
 		<nav>
 			<ol class="list-none pl-0 flex gap-x-2">
-				<li class="text-blue-300 underline underline-blue-300 underline-offset-4"><a href="/">Home</a></li>
+				<li class="text-blue-300 underline underline-blue-300 underline-offset-4">
+					<a href="/">Home</a>
+				</li>
 				<span class="font-semibold">&gt;</span>
-				<li class="text-orange-300 underline underline-orange-300 underline-offset-4"><a href="/challenges">Challenges</a></li>
+				<li class="text-orange-300 underline underline-orange-300 underline-offset-4">
+					<a href="/challenges">Challenges</a>
+				</li>
 				<span class="font-semibold">&gt;</span>
 				<li class="">{data.title}</li>
 			</ol>

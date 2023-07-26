@@ -16,14 +16,16 @@
 
 		<nav>
 			<ol class="list-none pl-0 flex gap-x-2">
-				<li class="text-blue-300 underline underline-blue-300 underline-offset-4"><a href="/">Home</a></li>
+				<li class="text-blue-300 underline underline-blue-300 underline-offset-4">
+					<a href="/">Home</a>
+				</li>
 				<span class="font-semibold">&gt;</span>
 				<li>Challenges</li>
 			</ol>
 		</nav>
 	</div>
 
-	<section id="links" class="mt-16">
+	<section id="links" class="mt-16 flex flex-col gap-4">
 		{#each data.challenges as challenge}
 			<a
 				href="/challenges/{challenge.slug}"
