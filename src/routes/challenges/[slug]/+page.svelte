@@ -112,6 +112,7 @@
 			<CodeMirror
 				value={data.markup}
 				lang={html()}
+				langLabel="HTML"
 				theme={oneDark}
 				readonly
 				class="rounded overflow-clip"
@@ -121,6 +122,7 @@
 				<CodeMirror
 					bind:value={styles}
 					lang={css()}
+					langLabel="CSS"
 					theme={oneDark}
 					class="rounded overflow-clip"
 				/>

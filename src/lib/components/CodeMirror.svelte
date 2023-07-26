@@ -20,6 +20,7 @@
 
 	export let basic = true;
 	export let lang: LanguageSupport | null | undefined = undefined;
+	export let langLabel: 'HTML' | 'CSS' | undefined;
 	export let theme: Extension | null | undefined = undefined;
 	export let extensions: Extension[] = [];
 
@@ -55,7 +56,7 @@
 			lang
 		),
 		...get_theme(theme, styles),
-		...extensions
+		...extensions,
 	];
 
 	$: view && update(value);
@@ -76,7 +77,7 @@
 				if (!update_from_prop && transaction.docChanged) {
 					on_change();
 				}
-			}
+			},
 		});
 	}
 
@@ -87,7 +88,7 @@
 		}
 
 		view.dispatch({
-			effects: StateEffect.reconfigure.of(state_extensions)
+			effects: StateEffect.reconfigure.of(state_extensions),
 		});
 	}
 
@@ -122,7 +123,7 @@
 	function create_editor_state(value: string | null | undefined): EditorState {
 		return EditorState.create({
 			doc: value ?? undefined,
-			extensions: state_extensions
+			extensions: state_extensions,
 		});
 	}
 
@@ -139,7 +140,7 @@
 		const extensions: Extension[] = [
 			indentUnit.of(' '.repeat(tabSize)),
 			EditorView.editable.of(editable),
-			EditorState.readOnly.of(readonly)
+			EditorState.readOnly.of(readonly),
 		];
 
 		if (basic) extensions.push(basicSetup);
@@ -163,7 +164,11 @@
 </script>
 
 {#if is_browser}
-	<div class="codemirror-wrapper {classes}" bind:this={element} />
+	<div class="codemirror-wrapper {classes}" bind:this={element}>
+		{#if !!langLabel}
+			<div class="lang-label">{langLabel}</div>
+		{/if}
+	</div>
 {:else}
 	<div class="scm-waiting {classes}">
 		<div class="scm-waiting__loading scm-loading">
@@ -176,6 +181,22 @@
 {/if}
 
 <style>
+	.codemirror-wrapper {
+		position: relative;
+	}
+	.lang-label {
+		position: absolute;
+		color: white;
+		opacity: 50%;
+		inset: 0.25rem 0.4rem auto auto;
+		z-index: 1;
+		font-size: 0.8rem;
+	}
+	.codemirror-wrapper :global(.cm-editor) {
+		font-size: 0.9rem;
+		font-family: monospace;
+	}
+
 	.codemirror-wrapper :global(.cm-focused) {
 		outline: none;
 	}
@@ -189,7 +210,6 @@
 		left: 0;
 		bottom: 0;
 		right: 0;
-		background-color: rgba(255, 255, 255, 0.5);
 	}
 
 	.scm-loading {
@@ -210,7 +230,7 @@
 		font-family: sans-serif;
 	}
 	.scm-pre {
-		font-size: 0.85rem;
+		font-size: 1rem;
 		font-family: monospace;
 		tab-size: 2;
 		-moz-tab-size: 2;
