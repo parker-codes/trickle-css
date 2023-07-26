@@ -1,6 +1,7 @@
 export default {
 	title: '⛄️ Snowman',
 	slug: 'snowman',
+	intro: 'Style the three balls to look like a snowman.',
 	startingStyles: `
 .ball {
   width: 10px;

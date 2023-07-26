@@ -4,6 +4,7 @@ import { browser } from '$app/environment';
 export interface Challenge {
 	title: string;
 	slug: string;
+	intro: string;
 	// TODO: add difficulty rating
 	startingStyles: string;
 	markup: string;

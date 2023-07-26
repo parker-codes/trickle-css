@@ -97,7 +97,7 @@
 
 	<section id="tasks" class="mt-16 px-6 border-l-2 border-l-red-300">
 		<h2 class="text-2xl font-bold mb-4">Instructions</h2>
-		<p>Style the three balls to look like a snowman.</p>
+		<p>{data.intro}</p>
 
 		<ul class="mt-4">
 			{#each verifiedTasks as task}
