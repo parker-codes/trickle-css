@@ -118,3 +118,30 @@ export default {
 		},
 	],
 };
+
+/**
+ *  Possible Solution
+
+	#snowman {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.ball {
+		--base-size: 100px;
+
+		width: var(--base-size);
+		aspect-ratio: 1;
+		border-radius: 50%;
+		background-color: #fff;
+	}
+
+	#ball-2 {
+		width: calc(var(--base-size) * 1.3);
+	}
+
+	#ball-3 {
+		width: calc(var(--base-size) * 1.7);
+	}
+ */
