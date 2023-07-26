@@ -1,6 +1,6 @@
 import type { PageLoad } from './$types';
 import type { Challenge } from '$lib/models/challenge';
-import { challenges } from '$lib/challenges';
+import { challenges } from '$lib/data/challenges';
 
 interface PageData {
 	challenges: Challenge[];

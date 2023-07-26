@@ -70,7 +70,21 @@
 	$: safeMarkup = DOMPurify.sanitize(data.markup);
 </script>
 
+<svelte:head>
+	<title>Challenge: {data.title}</title>
+</svelte:head>
+
 <div class="max-w-6xl mx-auto px-6 pb-16">
+	<nav>
+		<ol class="list-none pl-0 flex gap-x-2">
+			<li class="text-blue-300 underline underline-blue-300 underline-offset-4"><a href="/">Home</a></li>
+			<span>&gt;</span>
+			<li class="text-orange-300 underline underline-orange-300 underline-offset-4"><a href="/challenges">Challenges</a></li>
+			<span>&gt;</span>
+			<li class="">{data.title}</li>
+		</ol>
+	</nav>
+
 	<h1 class="text-4xl font-bold mx-4 my-8">
 		<div class="mx-auto w-fit pt-4 border-t-2 border-t-green-300">{data.title}</div>
 	</h1>
