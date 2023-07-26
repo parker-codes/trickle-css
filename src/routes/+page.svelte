@@ -11,7 +11,7 @@
 	</section>
 
 	<section class="mt-20">
-		<a href="/challenges" class="px-4 py-2 rounded bg-green-300 text-slate-900 font-semibold">
+		<a href="/challenges" class="px-4 py-2 rounded bg-indigo-300 text-slate-900 font-semibold">
 			View challenges
 		</a>
 	</section>

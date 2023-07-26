@@ -77,7 +77,7 @@
 <div class="max-w-6xl mx-auto px-6 pb-16">
 	<div class="mt-8 flex justify-between items-center flex-wrap gap-4">
 		<h1 class="text-4xl font-bold">
-			<div class="mx-auto w-fit pt-4 border-t-2 border-t-green-300">{data.title}</div>
+			<div class="mx-auto w-fit pt-4 border-t-2 border-t-indigo-300">{data.title}</div>
 		</h1>
 
 		<nav>
