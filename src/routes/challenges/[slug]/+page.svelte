@@ -147,7 +147,7 @@
 
 		<section
 			id="preview"
-			class="flex-grow basis-96 p-6 rounded border-2 border-dashed border-gray-200/10"
+			class="flex-grow basis-96 p-6 rounded border-2 border-dashed border-gray-200/10 overflow-hidden"
 		>
 			{@html `<style>${safeStyles}</style>`}
 			{@html safeMarkup}
