@@ -75,21 +75,23 @@
 </svelte:head>
 
 <div class="max-w-6xl mx-auto px-6 pb-16">
-	<nav>
-		<ol class="list-none pl-0 flex gap-x-2">
-			<li class="text-blue-300 underline underline-blue-300 underline-offset-4"><a href="/">Home</a></li>
-			<span>&gt;</span>
-			<li class="text-orange-300 underline underline-orange-300 underline-offset-4"><a href="/challenges">Challenges</a></li>
-			<span>&gt;</span>
-			<li class="">{data.title}</li>
-		</ol>
-	</nav>
+	<div class="mt-8 flex justify-between items-center flex-wrap gap-4">
+		<h1 class="text-4xl font-bold">
+			<div class="mx-auto w-fit pt-4 border-t-2 border-t-green-300">{data.title}</div>
+		</h1>
 
-	<h1 class="text-4xl font-bold mx-4 my-8">
-		<div class="mx-auto w-fit pt-4 border-t-2 border-t-green-300">{data.title}</div>
-	</h1>
+		<nav>
+			<ol class="list-none pl-0 flex gap-x-2">
+				<li class="text-blue-300 underline underline-blue-300 underline-offset-4"><a href="/">Home</a></li>
+				<span class="font-semibold">&gt;</span>
+				<li class="text-orange-300 underline underline-orange-300 underline-offset-4"><a href="/challenges">Challenges</a></li>
+				<span class="font-semibold">&gt;</span>
+				<li class="">{data.title}</li>
+			</ol>
+		</nav>
+	</div>
 
-	<section id="tasks" class="mt-20 px-6 border-l-2 border-l-red-300">
+	<section id="tasks" class="mt-16 px-6 border-l-2 border-l-red-300">
 		<h2 class="text-2xl font-bold mb-4">Instructions</h2>
 		<p>Style the three balls to look like a snowman.</p>
 
