@@ -1,7 +1,7 @@
 <script lang="ts">
 </script>
 
-<div class="max-w-6xl mx-auto">
+<div class="max-w-6xl mx-auto px-6 pb-16">
 	<h1 class="text-4xl font-bold mx-4 my-8">
 		<div class="mx-auto w-fit pt-4 border-t-2 border-t-green-300">Style By Number</div>
 	</h1>
