@@ -1,10 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import type { Challenge } from '$lib/models/challenge';
-
-const challenges: Challenge[] = Object.values(
-	import.meta.glob('$lib/challenges/*.ts', { eager: true, import: 'default' })
-);
+import { challenges } from '$lib/challenges';
 
 export const load = (({ params }) => {
 	const challenge = challenges.find((challenge) => challenge.slug === params.slug);

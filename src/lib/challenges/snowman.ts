@@ -1,5 +1,5 @@
 export default {
-	title: 'Snowman',
+	title: '⛄️ Snowman',
 	slug: 'snowman',
 	startingStyles: `
 .ball {

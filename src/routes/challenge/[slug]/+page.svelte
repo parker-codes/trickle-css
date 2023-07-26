@@ -10,7 +10,7 @@
 		saveChallengeStyles,
 		clearSavedChallengeStyles,
 	} from '$lib/models/challenge';
-	import { getPercentCompleted, type Task, type VerifiedTask } from '$lib/models/task';
+	import { getPercentCompleted, type VerifiedTask } from '$lib/models/task';
 	import { verify } from '$lib/models/requirement';
 	import { debounce } from '$lib/utils/misc';
 	import type { PageData } from './$types';
@@ -62,13 +62,17 @@
 	}
 	$: stylesChanged(styles);
 
+	/**
+	 * Sanitization
+	 */
+
 	$: safeStyles = DOMPurify.sanitize(styles);
 	$: safeMarkup = DOMPurify.sanitize(data.markup);
 </script>
 
 <div class="max-w-6xl mx-auto px-6 pb-16">
 	<h1 class="text-4xl font-bold mx-4 my-8">
-		<div class="mx-auto w-fit pt-4 border-t-2 border-t-green-300">Style By Number</div>
+		<div class="mx-auto w-fit pt-4 border-t-2 border-t-green-300">{data.title}</div>
 	</h1>
 
 	<section id="tasks" class="mt-20 px-6 border-l-2 border-l-red-300">
