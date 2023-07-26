@@ -186,11 +186,13 @@
 	}
 	.lang-label {
 		position: absolute;
-		color: white;
-		opacity: 50%;
-		inset: 0.25rem 0.4rem auto auto;
+		inset: 0.15rem 0.25rem auto auto;
 		z-index: 1;
-		font-size: 0.8rem;
+		padding: 0.1rem 0.3rem;
+		background-color: #0f172a;
+		color: rgba(255, 255, 255, 0.7);
+		font-size: 0.7rem;
+		letter-spacing: 0.02em;
 	}
 	.codemirror-wrapper :global(.cm-editor) {
 		font-size: 0.9rem;
