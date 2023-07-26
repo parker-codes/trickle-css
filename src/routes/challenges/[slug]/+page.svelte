@@ -122,6 +122,7 @@
 				langLabel="HTML"
 				theme={oneDark}
 				readonly
+				collapsable
 				class="rounded overflow-clip"
 			/>
 
@@ -131,6 +132,7 @@
 					lang={css()}
 					langLabel="CSS"
 					theme={oneDark}
+					collapsable
 					class="rounded overflow-clip"
 				/>
 				<button

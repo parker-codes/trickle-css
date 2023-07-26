@@ -20,7 +20,7 @@
 
 	export let basic = true;
 	export let lang: LanguageSupport | null | undefined = undefined;
-	export let langLabel: 'HTML' | 'CSS' | undefined;
+	export let langLabel: 'HTML' | 'CSS';
 	export let theme: Extension | null | undefined = undefined;
 	export let extensions: Extension[] = [];
 
@@ -161,13 +161,31 @@
 		if (theme) extensions.push(theme);
 		return extensions;
 	}
+
+	export let collapsable = false;
+	let collapsed = false;
 </script>
 
 {#if is_browser}
-	<div class="codemirror-wrapper {classes}" bind:this={element}>
-		{#if !!langLabel}
+	<div class="codemirror-wrapper {classes}" class:collapsed bind:this={element}>
+		<div class="collapse-cover" />
+
+		<div class="code-tools">
+			{#if collapsable}
+				<button
+					on:click={() => (collapsed = !collapsed)}
+					class="collapse-button rounded px-2 py-1 text-xs bg-slate-700 hover:bg-slate-600 text-white flex gap-1"
+				>
+					{#if collapsed}
+						Expand
+					{:else}
+						Collapse
+					{/if}
+				</button>
+			{/if}
+
 			<div class="lang-label">{langLabel}</div>
-		{/if}
+		</div>
 	</div>
 {:else}
 	<div class="scm-waiting {classes}">
@@ -184,16 +202,42 @@
 	.codemirror-wrapper {
 		position: relative;
 	}
-	.lang-label {
+
+	.codemirror-wrapper :global(.cm-editor) {
+		max-height: 16rem;
+		overflow-y: auto;
+	}
+	.codemirror-wrapper.collapsed :global(.cm-editor) {
+		max-height: 1.6rem;
+	}
+	.codemirror-wrapper.collapsed .collapse-cover {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		background-color: #334155;
+	}
+
+	.code-tools {
 		position: absolute;
 		inset: 0.15rem 0.25rem auto auto;
 		z-index: 1;
+
+		display: flex;
+		justify-content: flex-end;
+		gap: 0.5rem;
+	}
+	.collapse-button {
 		padding: 0.1rem 0.3rem;
-		background-color: #0f172a;
+		font-size: 0.7rem;
+		letter-spacing: 0.02em;
+	}
+	.lang-label {
+		padding: 0.1rem 0.3rem;
 		color: rgba(255, 255, 255, 0.7);
 		font-size: 0.7rem;
 		letter-spacing: 0.02em;
 	}
+
 	.codemirror-wrapper :global(.cm-editor) {
 		font-size: 0.9rem;
 		font-family: monospace;
