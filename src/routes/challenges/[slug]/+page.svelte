@@ -24,6 +24,7 @@
 	 * Verifying tasks
 	 */
 
+	let frameDoc: Document | undefined;
 	let verifiedTasks: VerifiedTask[] = [];
 
 	async function verifyAllTasks(): Promise<void> {
@@ -31,7 +32,7 @@
 
 		verifiedTasks = data.tasks.map((task) => ({
 			...task,
-			completed: verify(task.requirement),
+			completed: verify(frameDoc, task.requirement),
 		}));
 	}
 
@@ -142,7 +143,7 @@
 			id="preview"
 			class="flex-grow basis-96 p-6 rounded border-2 border-dashed border-gray-200/10 overflow-hidden"
 		>
-			<Preview {styles} markup={data.markup} />
+			<Preview bind:frameDoc {styles} markup={data.markup} />
 		</section>
 	</div>
 </div>

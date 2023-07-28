@@ -8,14 +8,24 @@
 	export let markup: string;
 
 	let iframe: HTMLIFrameElement;
-	// TODO: heavily debounce
+	export let frameDoc: Document | undefined = undefined; // passed up to parent to use in requirement verification
+
+	// NOTE: runs on every code change
+	function onIframeLoad(): void {
+		if (!frameDoc) {
+			frameDoc = iframe?.contentWindow?.document;
+		}
+		computeIframeHeight();
+	}
+
 	let iframeHeight: number; // set on iframe load and reactively
 	$: computeIframeHeight(safeStyles);
 
+	// TODO: heavily debounce
 	async function computeIframeHeight(_styles?: string): Promise<void> {
 		await tick(); // wait for styles to apply before checking
 		if (!browser || !iframe) return;
-		iframeHeight = iframe.contentWindow?.document.body.scrollHeight || 0;
+		iframeHeight = iframe?.contentWindow?.document.body.scrollHeight || 0;
 	}
 
 	/**
@@ -38,7 +48,7 @@
 <!-- TODO: use the sandbox property -->
 <iframe
 	bind:this={iframe}
-	on:load={() => computeIframeHeight()}
+	on:load={onIframeLoad}
 	srcdoc={code}
 	class="relative w-full border-none"
 	height={iframeHeight}

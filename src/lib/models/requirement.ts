@@ -17,19 +17,19 @@ export interface Requirement {
 
 export type RequirementOrSet = Requirement | Requirement[];
 
-export function verify(requirement: RequirementOrSet): boolean {
+export function verify(frameDoc: Document | undefined, requirement: RequirementOrSet): boolean {
 	if (Array.isArray(requirement)) {
-		return requirement.every(verifySingle);
+		return requirement.every((r) => verifySingle(frameDoc, r));
 	} else {
-		return verifySingle(requirement);
+		return verifySingle(frameDoc, requirement);
 	}
 }
 
-function verifySingle(requirement: Requirement): boolean {
-	if (!browser) return false;
+function verifySingle(frameDoc: Document | undefined, requirement: Requirement): boolean {
+	if (!browser || !frameDoc) return false;
 
 	// TODO: could also parse the code var itself instead of inspecting the DOM
-	const el = document.querySelector(requirement.selector);
+	const el = frameDoc.querySelector(requirement.selector);
 	if (!el) return false;
 	const style = window.getComputedStyle(el);
 
