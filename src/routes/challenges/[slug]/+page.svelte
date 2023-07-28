@@ -3,8 +3,8 @@
 	import { css } from '@codemirror/lang-css';
 	import { html } from '@codemirror/lang-html';
 	import { oneDark } from '@codemirror/theme-one-dark';
-	import DOMPurify from 'isomorphic-dompurify';
-	import CodeMirror from '$lib/components/CodeMirror.svelte';
+	import CodeEditor from '$lib/components/CodeEditor.svelte';
+	import Preview from '$lib/components/Preview.svelte';
 	import {
 		getSavedChallengeStyles,
 		saveChallengeStyles,
@@ -61,13 +61,6 @@
 		debouncedPersistStyles();
 	}
 	$: stylesChanged(styles);
-
-	/**
-	 * Sanitization
-	 */
-
-	$: safeStyles = DOMPurify.sanitize(styles);
-	$: safeMarkup = DOMPurify.sanitize(data.markup);
 </script>
 
 <svelte:head>
@@ -116,7 +109,7 @@
 			id="editors"
 			class="max-w-full flex-grow basis-96 flex flex-col justify-between gap-y-4"
 		>
-			<CodeMirror
+			<CodeEditor
 				value={data.markup}
 				lang={html()}
 				langLabel="HTML"
@@ -127,7 +120,7 @@
 			/>
 
 			<div>
-				<CodeMirror
+				<CodeEditor
 					bind:value={styles}
 					lang={css()}
 					langLabel="CSS"
@@ -149,8 +142,7 @@
 			id="preview"
 			class="flex-grow basis-96 p-6 rounded border-2 border-dashed border-gray-200/10 overflow-hidden"
 		>
-			{@html `<style>${safeStyles}</style>`}
-			{@html safeMarkup}
+			<Preview {styles} markup={data.markup} />
 		</section>
 	</div>
 </div>
