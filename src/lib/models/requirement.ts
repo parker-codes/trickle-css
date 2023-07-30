@@ -17,7 +17,7 @@ export interface Requirement {
 
 export type RequirementOrSet = Requirement | Requirement[];
 
-export function verify(frameDoc: Document | undefined, requirement: RequirementOrSet): boolean {
+export function verify(frameDoc: Document | null, requirement: RequirementOrSet): boolean {
 	if (Array.isArray(requirement)) {
 		return requirement.every((r) => verifySingle(frameDoc, r));
 	} else {
@@ -25,11 +25,11 @@ export function verify(frameDoc: Document | undefined, requirement: RequirementO
 	}
 }
 
-function verifySingle(frameDoc: Document | undefined, requirement: Requirement): boolean {
+function verifySingle(frameDoc: Document | null, requirement: Requirement): boolean {
 	if (!browser || !frameDoc) return false;
 
 	// TODO: could also parse the code var itself instead of inspecting the DOM
-	const el = frameDoc.querySelector(requirement.selector);
+	const el: HTMLElement | null = frameDoc.querySelector(requirement.selector);
 	if (!el) return false;
 	const style = window.getComputedStyle(el);
 

@@ -24,7 +24,7 @@
 	 * Verifying tasks
 	 */
 
-	let frameDoc: Document | undefined;
+	let frameDoc: Document | null;
 	let verifiedTasks: VerifiedTask[] = [];
 
 	async function verifyAllTasks(): Promise<void> {
@@ -42,7 +42,8 @@
 	 * Persisting styles
 	 */
 
-	onMount(() => {
+	onMount(async () => {
+		await tick(); // wait for editor to be ready before updating value
 		const savedStyles = getSavedChallengeStyles(data.slug);
 		if (savedStyles) styles = savedStyles;
 	});
