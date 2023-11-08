@@ -2,17 +2,15 @@ import { browser } from '$app/environment';
 // @ts-expect-error No types for this package
 import units from 'units-css';
 
-export type RequirementType = 'property' | 'variable';
-
-export type PropertyType = 'literal' | 'number';
-
+export type RequirementType = 'literal' | 'unit';
+export type SourceType = 'exact' | 'computed';
 export type Comparator = '>' | '>=' | '<' | '<=' | '==' | '!=';
 
 export interface Requirement {
-	type: RequirementType;
 	selector: string;
 	property: string;
-	propertyType: PropertyType;
+	type: RequirementType;
+	source?: SourceType;
 	comparator?: Comparator;
 	value: string;
 }
@@ -33,64 +31,72 @@ function verifySingle(frameDoc: Document | null, requirement: Requirement): bool
 	// TODO: could also parse the code var itself instead of inspecting the DOM
 	const el: HTMLElement | null = frameDoc.querySelector(requirement.selector);
 	if (!el) return false;
-	const style = window.getComputedStyle(el);
 
-	// this works for both properties and variables
-	// const value = style.getPropertyValue(requirement.property);
-	console.log('property', requirement.property);
+	console.log('requirement', {
+		property: requirement.property,
+		type: requirement.type,
+		source: requirement.source,
+		value: requirement.value,
+	});
 
-	// TODO: could try el.computedStyleMap().get(requirement.property) instead
-	// THIS WORKS!!! (but only on Chromium)
-	// const mapValue = el.computedStyleMap().get(requirement.property)?.toString() ?? '';
-	// console.log({
-	// 	property: requirement.property,
-	// 	value,
-	// 	mapValue,
-	// 	// mapValueNumeric: CSSNumericValue.parse(mapValue),
-	// 	mapValueEquals: mapValue === requirement.value,
-	// });
+	// defaults to computed
+	const value =
+		requirement?.source === 'exact'
+			? getExactValue(el, requirement.property)
+			: getComputedValue(el, requirement.property);
 
-	// NOTE: transform should not be passed directly as the property name - instead specify a transform keyword (e.g. rotate)
-
-	switch (requirement.propertyType) {
+	switch (requirement.type) {
 		case 'literal': {
-			const value = el.computedStyleMap().get(requirement.property)?.toString() ?? '';
-			console.log({ value, requirement: requirement.value, property: requirement.property });
-			return value === requirement.value;
+			console.log('literal', value);
+			const result = value === requirement.value;
+			console.log('result', result);
+			return result;
 		}
-		case 'number': {
-			const computedValue = style.getPropertyValue(requirement.property);
-			console.log('computed value', computedValue);
-			const converted = units.convert('px', computedValue, el, requirement.property);
-			console.log('converted', converted);
-			// return verifyNumber(requirement, value);
+		case 'unit': {
+			console.log('unit', value);
+			const result = verifyNumber(requirement, el, value);
+			console.log('result', result);
+			return result;
 		}
 	}
 }
 
-function verifyNumber(requirement: Requirement, value: string): boolean {
-	// TODO: need better parsing than only handling generic numbers; should be able to do px, rem, etc
-	// const actual = CSSNumericValue.parse(value);
-	// const expected = CSSNumericValue.parse(requirement.value);
-	// console.log({ actual, expected, property: requirement.property });
+function getExactValue(el: HTMLElement, property: string): string {
+	return el.computedStyleMap().get(property)?.toString() ?? '';
+}
+function getComputedValue(el: HTMLElement, property: string): string {
+	const style = window.getComputedStyle(el);
+	return style.getPropertyValue(property);
+}
+
+interface UnitValue {
+	value: number;
+	unit: string;
+}
+function parseUnitValue(value: string | number, property?: string): UnitValue {
+	return units.parse(value, property);
+}
+
+function verifyNumber(requirement: Requirement, el: HTMLElement, value: string): boolean {
+	const expected = parseUnitValue(requirement.value, requirement.property);
+
+	// NOTE: transform should not be passed directly as the property name - instead specify a transform keyword (e.g. rotate)
+	const convertedValue: number = units.convert(expected.unit, value, el, requirement.property);
+	console.log('converted', convertedValue);
 
 	switch (requirement.comparator) {
 		case '==':
-			return actual.equals(expected);
+			return expected.value === convertedValue;
 		case '!=':
-			return !actual.equals(expected);
+			return expected.value !== convertedValue;
 		case '>':
-			if (actual.unit !== expected.unit) return false;
-			return actual.value > expected.value;
+			return expected.value > convertedValue;
 		case '>=':
-			if (actual.unit !== expected.unit) return false;
-			return actual.value >= expected.value;
+			return expected.value >= convertedValue;
 		case '<':
-			if (actual.unit !== expected.unit) return false;
-			return actual.value < expected.value;
+			return expected.value < convertedValue;
 		case '<=':
-			if (actual.unit !== expected.unit) return false;
-			return actual.value <= expected.value;
+			return expected.value <= convertedValue;
 		default:
 			return false;
 	}

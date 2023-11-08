@@ -34,10 +34,10 @@ export default {
 		{
 			text: `Set the background color of #chessboard to #000 as our base color`,
 			requirement: {
-				type: 'property',
 				selector: '#chessboard',
 				property: 'background-color',
-				propertyType: 'literal',
+				type: 'literal',
+				source: 'exact',
 				value: 'rgb(0, 0, 0)',
 			},
 		},
@@ -45,19 +45,19 @@ export default {
 			text: `Set the width of #chessboard to 100% and the aspect-ratio to 1 to make it square`,
 			requirement: [
 				{
-					type: 'property',
 					selector: '#chessboard',
 					property: 'width',
-					propertyType: 'number',
+					type: 'unit',
+					source: 'exact',
 					comparator: '==',
 					value: '100%',
 				},
 				{
-					type: 'property',
 					selector: '#chessboard',
 					property: 'aspect-ratio',
-					propertyType: 'literal',
-					value: '1',
+					type: 'literal',
+					source: 'exact',
+					value: '1 / 1',
 				},
 			],
 		},
@@ -65,25 +65,22 @@ export default {
 			text: `Set the border of all <td> elements to 3px solid #9ca3af`,
 			requirement: [
 				{
-					type: 'property',
 					selector: 'td',
 					property: 'border-width',
-					propertyType: 'number',
+					type: 'unit',
 					comparator: '==',
 					value: '3px',
 				},
 				{
-					type: 'property',
 					selector: 'td',
 					property: 'border-style',
-					propertyType: 'literal',
+					type: 'literal',
 					value: 'solid',
 				},
 				{
-					type: 'property',
 					selector: 'td',
 					property: 'border-color',
-					propertyType: 'literal',
+					type: 'literal',
 					value: 'rgb(156, 163, 175)',
 				},
 			],
@@ -92,17 +89,15 @@ export default {
 			text: `Let's get a little more complex! Set the background-color of every other square to #dc2626. You may be initially inclined to use the element IDs, but this is just a red herring - instead, craft your selector to target <td> elements. Do this by creating two selectors for the block - one for odd columns in odd rows and another for even columns in even rows. Use the \`nth-of-type\` selector to select the odd and even <tr> and <td> elements.`,
 			requirement: [
 				{
-					type: 'property',
 					selector: 'tr:nth-of-type(odd) td:nth-of-type(odd)',
 					property: 'background-color',
-					propertyType: 'literal',
+					type: 'literal',
 					value: 'rgb(220, 38, 38)',
 				},
 				{
-					type: 'property',
 					selector: 'tr:nth-of-type(even) td:nth-of-type(even)',
 					property: 'background-color',
-					propertyType: 'literal',
+					type: 'literal',
 					value: 'rgb(220, 38, 38)',
 				},
 				// TODO: check that opposites are still good?
@@ -111,13 +106,11 @@ export default {
 		{
 			text: `Lastly, rotate the board to see a different perspective! \`rotate3d(5, 0, 1, 45deg)\``,
 			requirement: {
-				type: 'property',
 				selector: '#chessboard',
 				property: 'transform',
-				propertyType: 'literal',
-				// TODO: this is a crazy difference in values - how can we better check this?
-				value:
-					'matrix3d(0.988735, 0.138675, 0.0563256, 0, -0.138675, 0.707107, 0.693375, 0, 0.0563256, -0.693375, 0.718372, 0, 0, 0, 0, 1)',
+				type: 'literal',
+				source: 'exact',
+				value: 'rotate3d(5, 0, 1, 45deg)',
 			},
 		},
 	],
