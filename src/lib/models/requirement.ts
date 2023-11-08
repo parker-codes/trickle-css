@@ -1,6 +1,5 @@
 import { browser } from '$app/environment';
-// @ts-expect-error No types for this package
-import units from 'units-css';
+import { convertUnitValue, parseUnitValue } from '$lib/utils/units';
 
 export type RequirementType = 'literal' | 'unit';
 export type SourceType = 'exact' | 'computed';
@@ -32,35 +31,26 @@ function verifySingle(frameDoc: Document | null, requirement: Requirement): bool
 	const el: HTMLElement | null = frameDoc.querySelector(requirement.selector);
 	if (!el) return false;
 
-	console.log('requirement', {
-		property: requirement.property,
-		type: requirement.type,
-		source: requirement.source,
-		value: requirement.value,
-	});
-
-	// defaults to computed
-	const value =
-		requirement?.source === 'exact'
-			? getExactValue(el, requirement.property)
-			: getComputedValue(el, requirement.property);
+	const value = getValue(requirement, el);
 
 	switch (requirement.type) {
-		case 'literal': {
-			console.log('literal', value);
-			const result = value === requirement.value;
-			console.log('result', result);
-			return result;
-		}
-		case 'unit': {
-			console.log('unit', value);
-			const result = verifyNumber(requirement, el, value);
-			console.log('result', result);
-			return result;
-		}
+		case 'literal':
+			return literalMatches(requirement, value);
+		case 'unit':
+			return unitMatches(requirement, el, value);
 	}
 }
 
+// defaults to computed value
+function getValue(requirement: Requirement, el: HTMLElement): string {
+	switch (requirement?.source) {
+		case 'exact':
+			return getExactValue(el, requirement.property);
+		case 'computed':
+		default:
+			return getComputedValue(el, requirement.property);
+	}
+}
 function getExactValue(el: HTMLElement, property: string): string {
 	return el.computedStyleMap().get(property)?.toString() ?? '';
 }
@@ -69,34 +59,35 @@ function getComputedValue(el: HTMLElement, property: string): string {
 	return style.getPropertyValue(property);
 }
 
-interface UnitValue {
-	value: number;
-	unit: string;
-}
-function parseUnitValue(value: string | number, property?: string): UnitValue {
-	return units.parse(value, property);
+function literalMatches(requirement: Requirement, value: string): boolean {
+	switch (requirement.comparator) {
+		case '!=':
+			return value !== requirement.value;
+		case '==':
+		default:
+			return value === requirement.value;
+	}
 }
 
-function verifyNumber(requirement: Requirement, el: HTMLElement, value: string): boolean {
+function unitMatches(requirement: Requirement, el: HTMLElement, value: string): boolean {
 	const expected = parseUnitValue(requirement.value, requirement.property);
 
-	// NOTE: transform should not be passed directly as the property name - instead specify a transform keyword (e.g. rotate)
-	const convertedValue: number = units.convert(expected.unit, value, el, requirement.property);
-	console.log('converted', convertedValue);
+	const convertedValue = convertUnitValue(expected.unit, value, el, requirement.property);
+	if (convertedValue === null) return false;
 
 	switch (requirement.comparator) {
 		case '==':
-			return expected.value === convertedValue;
+			return convertedValue === expected.value;
 		case '!=':
-			return expected.value !== convertedValue;
+			return convertedValue !== expected.value;
 		case '>':
-			return expected.value > convertedValue;
+			return convertedValue > expected.value;
 		case '>=':
-			return expected.value >= convertedValue;
+			return convertedValue >= expected.value;
 		case '<':
-			return expected.value < convertedValue;
+			return convertedValue < expected.value;
 		case '<=':
-			return expected.value <= convertedValue;
+			return convertedValue <= expected.value;
 		default:
 			return false;
 	}
