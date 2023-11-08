@@ -89,6 +89,9 @@ devDependencies:
   typescript:
     specifier: ^5.0.0
     version: 5.1.6
+  units-css:
+    specifier: ^0.4.0
+    version: 0.4.0
   vite:
     specifier: ^4.4.2
     version: 4.4.4(@types/node@20.4.2)
@@ -1791,6 +1794,11 @@ packages:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
 
+  /isnumeric@0.2.0:
+    resolution: {integrity: sha512-uSJoAwnN1eCKDFKi8hL3UCYJSkQv+NwhKzhevUPIn/QZ8ILO21f+wQnlZHU0eh1rsLO1gI4w/HQdeOSTKwlqMg==}
+    engines: {node: '>= 0.8.x'}
+    dev: true
+
   /isomorphic-dompurify@1.8.0:
     resolution: {integrity: sha512-qvNsRVUQIArrn7/TNDw0+0wQgtvRxAkSzfe0pGpX1+OYeGhrAWELxZIb6x+KFFRS6mb4OUe+zAK9yp0WDZHUdQ==}
     dependencies:
@@ -2841,6 +2849,13 @@ packages:
       busboy: 1.6.0
     dev: true
 
+  /units-css@0.4.0:
+    resolution: {integrity: sha512-WijzYC+chwzg2D6HmNGUSzPAgFRJfuxVyG9oiY28Ei5E+g6fHoPkhXUr5GV+5hE/RTHZNd9SuX2KLioYHdttoA==}
+    dependencies:
+      isnumeric: 0.2.0
+      viewport-dimensions: 0.2.0
+    dev: true
+
   /universalify@0.2.0:
     resolution: {integrity: sha512-CJ1QgKmNg3CwvAv/kOFmtnEN05f0D/cn9QntgNOQlQF9dgvVTHj3t+8JPdjqawCHk7V/KA+fbUqzZ9XWhcqPUg==}
     engines: {node: '>= 4.0.0'}
@@ -2872,6 +2887,10 @@ packages:
 
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+    dev: true
+
+  /viewport-dimensions@0.2.0:
+    resolution: {integrity: sha512-94JqlKxEP4m7WO+N3rm4tFRGXZmXXwSPQCoV+EPxDnn8YAGiLU3T+Ha1imLreAjXsHl0K+ELnIqv64i1XZHLFQ==}
     dev: true
 
   /vite-node@0.32.4(@types/node@20.4.2):

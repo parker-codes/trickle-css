@@ -48,8 +48,8 @@ export default {
 					type: 'property',
 					selector: '#chessboard',
 					property: 'width',
-					propertyType: 'literal',
-					// TODO: looks like with parsing gets the px value, so I'll need to compute and check if it's correct?
+					propertyType: 'number',
+					comparator: '==',
 					value: '100%',
 				},
 				{
@@ -69,8 +69,8 @@ export default {
 					selector: 'td',
 					property: 'border-width',
 					propertyType: 'number',
-					comparator: '>=',
-					value: '2.4',
+					comparator: '==',
+					value: '3px',
 				},
 				{
 					type: 'property',
