@@ -122,7 +122,7 @@
 				theme={oneDark}
 				readonly
 				collapsable
-				class="rounded overflow-clip"
+				class="rounded overflow-clip "
 			/>
 
 			<div>
@@ -132,7 +132,7 @@
 					langLabel="CSS"
 					theme={oneDark}
 					collapsable
-					class="rounded overflow-clip"
+					class="styles-editor rounded overflow-clip"
 				/>
 				<button
 					on:click={resetStyles}
@@ -152,3 +152,12 @@
 		</section>
 	</div>
 </div>
+
+<style>
+	/* allow styles editor to be taller on mobile */
+	@media screen and (max-width: 639px) {
+		:global(.styles-editor) {
+			--editor-max-height: 26rem;
+		}
+	}
+</style>

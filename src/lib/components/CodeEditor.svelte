@@ -204,7 +204,7 @@
 	}
 
 	.codemirror-wrapper :global(.cm-editor) {
-		max-height: 16rem;
+		max-height: var(--editor-max-height, 18rem);
 		overflow-y: auto;
 	}
 	.codemirror-wrapper.collapsed :global(.cm-editor) {
