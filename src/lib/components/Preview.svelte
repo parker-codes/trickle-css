@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, tick } from 'svelte';
+	import { onMount, tick, createEventDispatcher } from 'svelte';
 	import { browser } from '$app/environment';
 	import DOMPurify from 'isomorphic-dompurify';
 	import previewCssReset from '$lib/styles/preview-css-reset.css?inline';
@@ -9,6 +9,8 @@
 
 	let iframe: HTMLIFrameElement;
 	export let frameDoc: Document | null = null; // passed up to parent to use in requirement verification
+
+	const dispatch = createEventDispatcher<{ update: void }>();
 
 	onMount(() => {
 		frameDoc = iframe?.contentDocument;
@@ -62,6 +64,8 @@
 		const newElement = doc.createElement('div');
 		newElement.innerHTML = code;
 		container.appendChild(newElement);
+
+		dispatch('update');
 	}
 </script>
 

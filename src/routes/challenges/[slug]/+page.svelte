@@ -36,6 +36,11 @@
 		}));
 	}
 
+	async function previewUpdated() {
+		await verifyAllTasks();
+	}
+	onMount(() => verifyAllTasks());
+
 	$: percentComplete = getPercentCompleted(verifiedTasks);
 
 	/**
@@ -58,8 +63,7 @@
 		clearSavedChallengeStyles(data.slug);
 	}
 
-	function stylesChanged(_styles: string): void {
-		verifyAllTasks();
+	async function stylesChanged(_styles: string): Promise<void> {
 		debouncedPersistStyles();
 	}
 	$: stylesChanged(styles);
@@ -144,7 +148,7 @@
 			id="preview"
 			class="flex-grow basis-96 p-6 rounded border-2 border-dashed border-gray-200/10 overflow-hidden"
 		>
-			<Preview bind:frameDoc {styles} markup={data.markup} />
+			<Preview bind:frameDoc {styles} markup={data.markup} on:update={previewUpdated} />
 		</section>
 	</div>
 </div>

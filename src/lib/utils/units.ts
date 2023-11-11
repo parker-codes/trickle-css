@@ -9,7 +9,6 @@ export function parseUnitValue(value: string | number, property?: string): UnitV
 	try {
 		return units.parse(value, property);
 	} catch (e) {
-		console.error('Error parsing units', e);
 		return { value: 0, unit: '' };
 	}
 }
@@ -24,7 +23,6 @@ export function convertUnitValue(
 	try {
 		return units.convert(expectedUnit, value, el, property);
 	} catch (e) {
-		console.error('Error converting units', e);
 		return null;
 	}
 }
