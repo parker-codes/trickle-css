@@ -32,7 +32,6 @@
 	 */
 
 	$: safeStyles = DOMPurify.sanitize(styles);
-	$: safeMarkup = DOMPurify.sanitize(markup);
 
 	// TODO: debounce updates to iframe
 
@@ -58,7 +57,7 @@
 			<style>${previewCssReset}</style>
 			<style>${safeStyles}</style>
 
-			${safeMarkup}
+			${markup}
 		`;
 
 		const newElement = doc.createElement('div');
