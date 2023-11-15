@@ -76,10 +76,6 @@ function unitMatches(requirement: Requirement, el: HTMLElement, value: string): 
 	if (convertedValue === null) return false;
 
 	switch (requirement.comparator) {
-		case '==':
-			return convertedValue === expected.value;
-		case '!=':
-			return convertedValue !== expected.value;
 		case '>':
 			return convertedValue > expected.value;
 		case '>=':
@@ -88,7 +84,10 @@ function unitMatches(requirement: Requirement, el: HTMLElement, value: string): 
 			return convertedValue < expected.value;
 		case '<=':
 			return convertedValue <= expected.value;
+		case '!=':
+			return convertedValue !== expected.value;
+		case '==':
 		default:
-			return false;
+			return convertedValue === expected.value;
 	}
 }
