@@ -96,12 +96,14 @@
 
 	<section id="tasks" class="mt-16 px-6 border-l-2 border-l-red-300">
 		<h2 class="text-2xl font-bold mb-4">Instructions</h2>
+		<!-- TODO: support markdown in intro -->
 		<p>{data.intro}</p>
 
-		<ul class="mt-4">
+		<ul class="mt-6">
 			{#each verifiedTasks as task}
 				<li class="flex gap-2 mt-1 first:mt-0">
 					<span class={task.completed ? 'text-green-300' : 'opacity-20'}>✓</span>
+					<!-- TODO: support markdown in text -->
 					<span>{task.text}</span>
 				</li>
 			{/each}
