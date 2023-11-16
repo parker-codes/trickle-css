@@ -1,5 +1,5 @@
-# Style By Number
+# Trickle CSS
 
-Learn CSS by creating small projects, guided and validated step by step!
+Learn the cascade one step at a time.
 
 Check out the [Contributing Guide](./CONTRIBUTING.md) if you would like to add a challenge or help out with development!

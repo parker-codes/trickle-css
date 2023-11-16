@@ -7,7 +7,7 @@
 </script>
 
 <svelte:head>
-	<title>Style By Number</title>
+	<title>Trickle CSS</title>
 </svelte:head>
 
 <slot />
