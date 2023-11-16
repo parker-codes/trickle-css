@@ -21,8 +21,7 @@ export type RequirementOrSet = Requirement | Requirement[];
 export function verify(frameDoc: Document | null, requirement: RequirementOrSet): boolean {
 	// side effect
 	if (browser && !userStylesRules) {
-		const iframe = document.querySelector('iframe');
-		const userStyles = iframe?.contentDocument?.getElementById('user-styles') as HTMLStyleElement;
+		const userStyles = frameDoc?.getElementById('user-styles') as HTMLStyleElement;
 		userStylesRules = userStyles?.sheet?.cssRules;
 	}
 
