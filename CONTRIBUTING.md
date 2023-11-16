@@ -42,6 +42,8 @@ The security of the users is of utmost importance. DO NOT submit a change with m
 
 ## Developing
 
+Please submit PRs against the `dev` branch. Once ready, merges to `main` will trigger a deployment.
+
 Once installed dependencies with `pnpm install`, start a development server:
 
 ```bash
