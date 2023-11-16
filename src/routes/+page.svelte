@@ -7,7 +7,7 @@
 	</h1>
 
 	<section id="editors" class="mt-20 flex justify-between gap-x-4">
-		Have some fun learning CSS while building things one step at a time!
+		Learn the cascade one step at a time.
 	</section>
 
 	<section class="mt-20">
