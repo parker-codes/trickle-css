@@ -9,6 +9,7 @@ export type Comparator = '>' | '>=' | '<' | '<=' | '==' | '!=';
 
 export interface Requirement {
 	selector: string;
+	pseudoSelector?: string;
 	property: string;
 	type: RequirementType;
 	source?: SourceType;
@@ -36,9 +37,9 @@ function verifySingle(frameDoc: Document | null, requirement: Requirement): bool
 	if (!browser || !frameDoc) return false;
 
 	const el: HTMLElement | null = frameDoc.querySelector(requirement.selector);
-	if (!el) return false;
 
 	const value = getValue(requirement, el);
+	// console.log({ value, requirement });
 
 	switch (requirement.type) {
 		case 'literal':
@@ -49,26 +50,29 @@ function verifySingle(frameDoc: Document | null, requirement: Requirement): bool
 }
 
 // defaults to computed value
-function getValue(requirement: Requirement, el: HTMLElement): string {
+function getValue(requirement: Requirement, el: HTMLElement | null): string {
 	switch (requirement?.source) {
 		case 'exact':
-			return getExactValue(requirement.selector, requirement.property);
+			return getExactValue(requirement);
 		case 'computed':
 		default:
-			return getComputedValue(el, requirement.property);
+			return getComputedValue(el, requirement);
 	}
 }
-function getExactValue(selector: string, property: string): string {
+function getExactValue(requirement: Requirement): string {
 	if (!userStylesRules) return '';
+
+	let selector = requirement.selector;
+	if (requirement.pseudoSelector) selector += requirement.pseudoSelector;
 
 	for (const rule of userStylesRules) {
 		// @ts-expect-error - selectorText exists
 		if (rule?.selectorText === selector) {
 			// check first before early return
 			// @ts-expect-error - style exists
-			if (rule?.style.getPropertyValue(property)) {
+			if (rule?.style.getPropertyValue(requirement.property)) {
 				// @ts-expect-error - style exists
-				return rule?.style.getPropertyValue(property);
+				return rule?.style.getPropertyValue(requirement.property);
 			}
 		}
 	}
@@ -76,9 +80,10 @@ function getExactValue(selector: string, property: string): string {
 	// no match found
 	return '';
 }
-function getComputedValue(el: HTMLElement, property: string): string {
-	const style = window.getComputedStyle(el);
-	return style.getPropertyValue(property);
+function getComputedValue(el: HTMLElement | null, requirement: Requirement): string {
+	if (!el) return '';
+	const style = window.getComputedStyle(el, requirement.pseudoSelector);
+	return style.getPropertyValue(requirement.property);
 }
 
 function literalMatches(requirement: Requirement, value: string): boolean {
@@ -91,7 +96,7 @@ function literalMatches(requirement: Requirement, value: string): boolean {
 	}
 }
 
-function unitMatches(requirement: Requirement, el: HTMLElement, value: string): boolean {
+function unitMatches(requirement: Requirement, el: HTMLElement | null, value: string): boolean {
 	const expected = parseUnitValue(requirement.value, requirement.property);
 
 	const convertedValue = convertUnitValue(expected.unit, value, el, requirement.property);

@@ -17,7 +17,7 @@ export function parseUnitValue(value: string | number, property?: string): UnitV
 export function convertUnitValue(
 	expectedUnit: string,
 	value: string | number,
-	el: HTMLElement,
+	el: HTMLElement | null,
 	property?: string
 ): number | null {
 	try {

@@ -25,22 +25,20 @@ To create a new challenge, please create a PR that adds a new `.ts` file to `src
 #### Requirement Config
 
 - `selector` (string): Which CSS selector should be targeted.
+- `pseudoSelector` (string; not required): Which CSS pseudo-selector should be targeted. Since they are not real, targettable elements in JS, we need to take a different approach using this field.
 - `property` (string): Which property to validate.
 - `type` ('literal' | 'unit'): Whether a fixed string (like `translateX(2px)`) should be used or a unit (like `2rem`) for validation. Users' entered units will be converted to the same one you enter in `value`, so they could correctly enter `2rem` and you could specify `32px` if the base font size is `16px`.
 - `source` ('exact' | 'computed'; not required and defaults to 'computed'): Whether the exact value or the computed value should be tested. This is important when working with browser calculations.
 - `comparator` ('>' | '>=' | '<' | '<=' | '==' | '!='; not required and defaults to '=='): How to compare the user-entered value with the expected value.
 - `value` (string): The expected value.
 
-
 Here are some more things to be aware of:
-- The user-entered styles are ran through DOMPurify to prevent malicious code execution, but the `markup` value provided by contributors is not.
 
+- The user-entered styles are ran through DOMPurify to prevent malicious code execution, but the `markup` value provided by contributors is not.
 
 ## Security
 
 The security of the users is of utmost importance. DO NOT submit a change with malicious intent. DO NOT paste in code you contribute unless you know what it does. DO NOT pull in arbitrary dependencies. Seek the help of project owners if you are unsure about the security implications of your contributions. If something is not sufficiently safe, we will provide a reason why as well as tips on how to mitigate the issue.
-
-
 
 ## Developing
 
