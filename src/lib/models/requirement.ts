@@ -1,6 +1,8 @@
 import { browser } from '$app/environment';
 import { convertUnitValue, parseUnitValue } from '$lib/utils/units';
 
+let userStylesRules: CSSRuleList | undefined;
+
 export type RequirementType = 'literal' | 'unit';
 export type SourceType = 'exact' | 'computed';
 export type Comparator = '>' | '>=' | '<' | '<=' | '==' | '!=';
@@ -17,6 +19,13 @@ export interface Requirement {
 export type RequirementOrSet = Requirement | Requirement[];
 
 export function verify(frameDoc: Document | null, requirement: RequirementOrSet): boolean {
+	// side effect
+	if (browser && !userStylesRules) {
+		const iframe = document.querySelector('iframe');
+		const userStyles = iframe?.contentDocument?.getElementById('user-styles') as HTMLStyleElement;
+		userStylesRules = userStyles?.sheet?.cssRules;
+	}
+
 	if (Array.isArray(requirement)) {
 		return requirement.every((r) => verifySingle(frameDoc, r));
 	} else {
@@ -27,7 +36,6 @@ export function verify(frameDoc: Document | null, requirement: RequirementOrSet)
 function verifySingle(frameDoc: Document | null, requirement: Requirement): boolean {
 	if (!browser || !frameDoc) return false;
 
-	// TODO: could also parse the code var itself instead of inspecting the DOM
 	const el: HTMLElement | null = frameDoc.querySelector(requirement.selector);
 	if (!el) return false;
 
@@ -45,14 +53,29 @@ function verifySingle(frameDoc: Document | null, requirement: Requirement): bool
 function getValue(requirement: Requirement, el: HTMLElement): string {
 	switch (requirement?.source) {
 		case 'exact':
-			return getExactValue(el, requirement.property);
+			return getExactValue(requirement.selector, requirement.property);
 		case 'computed':
 		default:
 			return getComputedValue(el, requirement.property);
 	}
 }
-function getExactValue(el: HTMLElement, property: string): string {
-	return el.computedStyleMap().get(property)?.toString() ?? '';
+function getExactValue(selector: string, property: string): string {
+	if (!userStylesRules) return '';
+
+	for (const rule of userStylesRules) {
+		// @ts-expect-error - selectorText exists
+		if (rule?.selectorText === selector) {
+			// check first before early return
+			// @ts-expect-error - style exists
+			if (rule?.style.getPropertyValue(property)) {
+				// @ts-expect-error - style exists
+				return rule?.style.getPropertyValue(property);
+			}
+		}
+	}
+
+	// no match found
+	return '';
 }
 function getComputedValue(el: HTMLElement, property: string): string {
 	const style = window.getComputedStyle(el);

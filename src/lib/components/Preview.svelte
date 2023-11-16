@@ -55,7 +55,7 @@
 
 		const code = `
 			<style>${previewCssReset}</style>
-			<style>${safeStyles}</style>
+			<style id="user-styles">${safeStyles}</style>
 
 			${markup}
 		`;
