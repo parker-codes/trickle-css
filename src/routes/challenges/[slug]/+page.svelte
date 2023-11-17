@@ -1,72 +1,20 @@
 <script lang="ts">
-	import { onMount, tick } from 'svelte';
+	import { useMachine } from '@xstate/svelte';
+	import { challengeMachine } from '$lib/machines/challenge.machine';
 	import { css } from '@codemirror/lang-css';
 	import { html } from '@codemirror/lang-html';
 	import { oneDark } from '@codemirror/theme-one-dark';
 	import CodeEditor from '$lib/components/CodeEditor.svelte';
 	import Preview from '$lib/components/Preview.svelte';
-	import {
-		getSavedChallengeStyles,
-		saveChallengeStyles,
-		clearSavedChallengeStyles,
-	} from '$lib/models/challenge';
-	import { getPercentCompleted, type VerifiedTask } from '$lib/models/task';
-	import { verify } from '$lib/models/requirement';
-	import { debounce } from '$lib/utils/misc';
+	import { getPercentCompleted } from '$lib/models/task';
 	import type { PageData } from './$types';
 	import ResetIcon from '$lib/components/icons/ResetIcon.svelte';
 
 	export let data: PageData;
 
-	let styles = data.startingStyles;
+	const { state, send } = useMachine(challengeMachine);
 
-	/**
-	 * Verifying tasks
-	 */
-
-	let frameDoc: Document | null;
-	let verifiedTasks: VerifiedTask[] = [];
-
-	async function verifyAllTasks(): Promise<void> {
-		await tick(); // wait for styles to apply before checking
-
-		verifiedTasks = data.tasks.map((task) => ({
-			...task,
-			completed: verify(frameDoc, task.requirement),
-		}));
-	}
-
-	async function previewUpdated() {
-		await verifyAllTasks();
-	}
-	onMount(() => verifyAllTasks());
-
-	$: percentComplete = getPercentCompleted(verifiedTasks);
-
-	/**
-	 * Persisting styles
-	 */
-
-	onMount(async () => {
-		await tick(); // wait for editor to be ready before updating value
-		const savedStyles = getSavedChallengeStyles(data.slug);
-		if (savedStyles) styles = savedStyles;
-	});
-
-	function persistStyles(): void {
-		saveChallengeStyles(data.slug, styles);
-	}
-	const debouncedPersistStyles = debounce(persistStyles, 10_00);
-
-	function resetStyles(): void {
-		styles = data.startingStyles;
-		clearSavedChallengeStyles(data.slug);
-	}
-
-	async function stylesChanged(_styles: string): Promise<void> {
-		debouncedPersistStyles();
-	}
-	$: stylesChanged(styles);
+	$: percentComplete = getPercentCompleted($state.context.verifiedTasks);
 </script>
 
 <svelte:head>
@@ -100,7 +48,7 @@
 		<p>{data.intro}</p>
 
 		<ul class="mt-6">
-			{#each verifiedTasks as task}
+			{#each $state.context.verifiedTasks as task}
 				<li class="flex gap-2 mt-1 first:mt-0">
 					<span class={task.completed ? 'text-green-300' : 'opacity-20'}>✓</span>
 					<!-- TODO: support markdown in text -->
@@ -129,7 +77,8 @@
 
 			<div>
 				<CodeEditor
-					bind:value={styles}
+					value={$state.context.styles}
+					on:change={(e) => send({ type: 'STYLES_CHANGED', value: e.detail })}
 					lang={css()}
 					langLabel="CSS"
 					theme={oneDark}
@@ -137,7 +86,7 @@
 					class="styles-editor rounded overflow-clip"
 				/>
 				<button
-					on:click={resetStyles}
+					on:click={() => send({ type: 'RESET_STYLES' })}
 					class="rounded px-2 py-1 mt-2 text-xs bg-slate-700 hover:bg-slate-600 text-white flex gap-1"
 				>
 					<ResetIcon class="w-3 h-3 translate-y-px" />
@@ -150,7 +99,15 @@
 			id="preview"
 			class="flex-grow basis-96 p-6 rounded border-2 border-dashed border-gray-200/10 overflow-hidden"
 		>
-			<Preview bind:frameDoc {styles} markup={data.markup} on:update={previewUpdated} />
+			<Preview
+				iframeHeight={$state.context.previewHeight}
+				on:load={(e) =>
+					send({
+						type: 'PREVIEW_FRAME_READY',
+						frameDoc: e.detail,
+						challenge: data,
+					})}
+			/>
 		</section>
 	</div>
 </div>

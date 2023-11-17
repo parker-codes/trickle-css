@@ -47,6 +47,9 @@ devDependencies:
   '@vercel/analytics':
     specifier: ^1.0.1
     version: 1.0.1
+  '@xstate/svelte':
+    specifier: ^2.1.0
+    version: 2.1.0(svelte@4.0.5)(xstate@4.38.3)
   autoprefixer:
     specifier: ^10.4.14
     version: 10.4.14(postcss@8.4.26)
@@ -98,6 +101,9 @@ devDependencies:
   vitest:
     specifier: ^0.32.2
     version: 0.32.4
+  xstate:
+    specifier: ^4.38.2
+    version: 4.38.3
 
 packages:
 
@@ -892,6 +898,22 @@ packages:
       diff-sequences: 29.4.3
       loupe: 2.3.6
       pretty-format: 29.6.1
+    dev: true
+
+  /@xstate/svelte@2.1.0(svelte@4.0.5)(xstate@4.38.3):
+    resolution: {integrity: sha512-cot553w2v4MdmDLkRBLhEjGO5LlnlPcpZ9RT7jFqpn+h0rpmjtkva6zjIZddPrxEOM6DVHDwzYbpDe+BErElQg==}
+    peerDependencies:
+      '@xstate/fsm': ^2.1.0
+      svelte: ^3.24.1 || ^4
+      xstate: ^4.38.1
+    peerDependenciesMeta:
+      '@xstate/fsm':
+        optional: true
+      xstate:
+        optional: true
+    dependencies:
+      svelte: 4.0.5
+      xstate: 4.38.3
     dev: true
 
   /abab@2.0.6:
@@ -3104,6 +3126,10 @@ packages:
 
   /xmlchars@2.2.0:
     resolution: {integrity: sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==}
+    dev: true
+
+  /xstate@4.38.3:
+    resolution: {integrity: sha512-SH7nAaaPQx57dx6qvfcIgqKRXIh4L0A1iYEqim4s1u7c9VoCgzZc+63FY90AKU4ZzOC2cfJzTnpO4zK7fCUzzw==}
     dev: true
 
   /yallist@4.0.0:

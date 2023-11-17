@@ -1,8 +1,6 @@
 import { browser } from '$app/environment';
 import { convertUnitValue, parseUnitValue } from '$lib/utils/units';
 
-let userStylesRules: CSSRuleList | undefined;
-
 export type RequirementType = 'literal' | 'unit';
 export type SourceType = 'exact' | 'computed';
 export type Comparator = '>' | '>=' | '<' | '<=' | '==' | '!=';
@@ -20,12 +18,6 @@ export interface Requirement {
 export type RequirementOrSet = Requirement | Requirement[];
 
 export function verify(frameDoc: Document | null, requirement: RequirementOrSet): boolean {
-	// side effect
-	if (browser && !userStylesRules) {
-		const userStyles = frameDoc?.getElementById('user-styles') as HTMLStyleElement;
-		userStylesRules = userStyles?.sheet?.cssRules;
-	}
-
 	if (Array.isArray(requirement)) {
 		return requirement.every((r) => verifySingle(frameDoc, r));
 	} else {
@@ -53,13 +45,15 @@ function verifySingle(frameDoc: Document | null, requirement: Requirement): bool
 function getValue(requirement: Requirement, el: HTMLElement | null): string {
 	switch (requirement?.source) {
 		case 'exact':
-			return getExactValue(requirement);
+			return getExactValue(el, requirement);
 		case 'computed':
 		default:
 			return getComputedValue(el, requirement);
 	}
 }
-function getExactValue(requirement: Requirement): string {
+function getExactValue(el: HTMLElement | null, requirement: Requirement): string {
+	const userStylesRules = (el?.ownerDocument?.getElementById('user-styles') as HTMLStyleElement)
+		?.sheet?.cssRules;
 	if (!userStylesRules) return '';
 
 	let selector = requirement.selector;
