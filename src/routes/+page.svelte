@@ -18,7 +18,7 @@
 		</span>
 	</h2>
 
-	<section class="mt-24 flex justify-center items-center gap-10">
+	<section class="mt-24 flex flex-wrap justify-center items-center gap-10">
 		<a href="/challenges" class="px-4 py-2 rounded bg-orange-300 text-slate-900 font-semibold">
 			View challenges
 		</a>
