@@ -13,9 +13,21 @@
 	const dispatch = createEventDispatcher<{ update: void }>();
 
 	onMount(() => {
+		if (iframe?.contentDocument?.readyState === 'complete') {
+			onIframeLoad();
+		} else {
+			iframe.addEventListener('load', onIframeLoad);
+		}
+
+		return () => {
+			iframe.removeEventListener('load', onIframeLoad);
+		};
+	});
+	function onIframeLoad() {
+		console.log('iframe loaded');
 		frameDoc = iframe?.contentDocument;
 		if (frameDoc) computeIframeHeight();
-	});
+	}
 
 	let iframeHeight: number; // set on mount and reactively
 	$: computeIframeHeight(safeStyles);
