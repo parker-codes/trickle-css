@@ -4,13 +4,13 @@ Learn the cascade one step at a time.
 
 ---
 
-# Contributing Guide
+## Contributing
 
 First of all, thanks for taking the time to contribute!
 
 All types of contributions are welcome, from bug fixes, fulfilling on new feature requests, and even creating new challenges for users to solve! Please create an issue for new feature discussions so they can be outlined and decided upon before implementation.
 
-## Creating a Challenge
+### Creating a Challenge
 
 To create a new challenge, please create a PR that adds a new `.ts` file to `src/lib/data/challenges`, such as `src/lib/data/challenges/pizza.ts`. This file should have a default export that matches the expected config. Since it is a `.ts` file and not simple `.json`, you can use functions and helpers to construct your challenge.
 
