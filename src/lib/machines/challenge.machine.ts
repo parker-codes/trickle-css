@@ -70,12 +70,12 @@ export const challengeMachine = createMachine(
 				states: {
 					editing: {
 						on: {
-							RESET_STYLES: {
-								actions: ['resetStyles', 'clearPersistedStyles'],
-							},
 							// TODO: debounce this
 							STYLES_CHANGED: {
 								actions: ['updateStyles', 'persistStyles'],
+							},
+							RESET_STYLES: {
+								actions: ['resetStyles', 'clearPersistedStyles'],
 							},
 						},
 					},
@@ -95,6 +95,7 @@ export const challengeMachine = createMachine(
 							idle: {
 								on: {
 									STYLES_CHANGED: 'updating',
+									RESET_STYLES: 'updating',
 								},
 							},
 							updating: {
