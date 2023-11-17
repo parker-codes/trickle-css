@@ -4,7 +4,7 @@
 
 <div class="max-w-6xl mx-auto px-6 pb-16">
 	<h1 class="text-4xl font-bold mx-4 my-8">
-		<div class="mx-auto w-fit pt-4 border-t-2 border-t-green-300">Trickle CSS</div>
+		<div class="mx-auto w-fit pt-4 border-t-2 border-t-blue-300">Trickle CSS</div>
 	</h1>
 
 	<h2 class="mt-14 mx-auto w-fit text-2xl font-bold text-center">
