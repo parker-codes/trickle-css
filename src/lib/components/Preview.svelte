@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount, createEventDispatcher } from 'svelte';
-	import { CONTAINER_ID } from '$lib/models/preview';
 
 	export let iframeHeight: number;
 	let iframe: HTMLIFrameElement;
@@ -27,7 +26,6 @@
 <!-- TODO: use the sandbox property -->
 <iframe
 	bind:this={iframe}
-	srcdoc="<div id='{CONTAINER_ID}'></div>"
 	class="relative w-full border-none"
 	height={iframeHeight}
 	frameborder="0"
