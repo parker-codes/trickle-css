@@ -22,10 +22,9 @@
 	}
 </script>
 
-<!-- TODO: use a CSP to allow inline styles and no scripts -->
-<!-- TODO: use the sandbox property -->
 <iframe
 	bind:this={iframe}
+	sandbox="allow-same-origin"
 	class="relative w-full border-none"
 	height={iframeHeight}
 	frameborder="0"
