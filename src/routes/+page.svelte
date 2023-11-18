@@ -1,5 +1,9 @@
 <script lang="ts">
 	const trickleShared = 'w-fit px-2 py-1 border-blue-300 border-t-2 border-r-2';
+
+	import cardPreview from '../lib/assets/demo-card-preview.jpg';
+	import cardMarkup from '../lib/assets/demo-card-markup.jpg';
+	import cardStyles from '../lib/assets/demo-card-styles.jpg';
 </script>
 
 <div class="max-w-6xl mx-auto px-6 pb-16">
@@ -53,5 +57,21 @@
 				/>
 			</svg>
 		</a>
+	</section>
+
+	<section class="mt-24 flex flex-wrap justify-center items-center gap-10">
+		<div class="relative w-full grid justify-items-center">
+			<img src={cardPreview} alt="Card demo preview" class="col-start-1 row-start-1 w-[16rem]" />
+			<img
+				src={cardMarkup}
+				alt="Card demo markup"
+				class="rounded-md col-start-1 row-start-1 w-[28rem] -translate-x-4 translate-y-[18rem]"
+			/>
+			<img
+				src={cardStyles}
+				alt="Card demo styles"
+				class="rounded-md col-start-1 row-start-1 w-[28rem] translate-x-4 translate-y-[22rem]"
+			/>
+		</div>
 	</section>
 </div>
